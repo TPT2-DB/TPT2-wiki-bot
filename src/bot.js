@@ -1,8 +1,7 @@
 const { Client, Intents } = require("discord.js");
+const { token, mongoKey } = require("../config");
 const fs = require("fs");
 const dirTree = require("directory-tree");
-
-require("dotenv").config();
 
 const client = new Client({
 	intents: [
@@ -10,15 +9,16 @@ const client = new Client({
 	],
 });
 
-const commandTree = {};
 const commands = [];
 client.commands = {};
 client.subCommands = {};
 client.subCommandGroups = {};
 
-const createTree = (dir, indents, cmdName, subCmdGroup) => {
+const createTree = (dir, indents, cmdName, subCmdGroup, ct) => {
+	const commandTree = ct;
 	const folders = [];
 	const files = dirTree(dir, { extensions: /\.js/ });
+	console.log(files)
 	for (const c in files.children) {
 		const child = files.children[c];
 
@@ -46,16 +46,15 @@ const createTree = (dir, indents, cmdName, subCmdGroup) => {
 	}
 	if (indents === 0) {
 		for (const folder of folders) {
-			createTree(folder.path, indents + 1, folder.name, subCmdGroup);
+			createTree(folder.path, indents + 1, folder.name, subCmdGroup, commandTree);
 		}
 	} else if (indents === 1) {
 		for (const folder of folders) {
-			createTree(folder.path, indents + 1, cmdName, folder.name);
+			createTree(folder.path, indents + 1, cmdName, folder.name, commandTree);
 		}
 	}
+	return commandTree;
 };
-
-createTree("./src/commands", 0, undefined, undefined);
 
 const createCommands = (tree) => {
 	const folders = [];
@@ -66,7 +65,9 @@ const createCommands = (tree) => {
 			const command = require(`./${child.replace("src/", "")}`);
 
 			client.commands[command.data.name] = command;
-			commands.push(command.data.toJSON());
+			if (command.data.name !== "help") {
+				commands.push(command.data.toJSON());
+			}
 		} else if (!childName.includes(".")) {
 			folders.push(child);
 		}
@@ -136,7 +137,13 @@ const createCommands = (tree) => {
 	}
 };
 
-createCommands(commandTree);
+const commandsFolder = fs.readdirSync("./src/commands");
+for (const folder of commandsFolder) {
+	console.log(folder)
+	if (folder === ".DS_Store") { continue }
+	const tree = createTree("./src/commands/" + folder, 0, undefined, undefined, {});
+	createCommands(tree);
+}
 
 const eventFiles = fs
 	.readdirSync("./src/events")
@@ -151,6 +158,23 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args, commands));
 	}
 }
+
+const choices = [];
+
+for (const cmdName in client.commands) {
+	const cmd = client.commands[cmdName];
+	choices.push([ cmd.data.name, cmd.data.name ]);
+}
+
+client.commands.help.data.addStringOption(option =>
+	option
+		.addChoices(choices)
+		.setName("command")
+		.setDescription("The name of the command you want to get more info about")
+		.setAutocomplete(false),
+);
+
+commands.push(client.commands.help.data.toJSON());
 
 let cmdTreeStr = "Commands:";
 for (const cmdName in client.commands) {
@@ -171,4 +195,4 @@ for (const cmdName in client.commands) {
 
 console.log(cmdTreeStr);
 
-client.login(process.env.TOKEN);
+client.login(token);

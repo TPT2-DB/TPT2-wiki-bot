@@ -1,7 +1,7 @@
 {
   "name": "tpt2-wiki-bot",
   "version": "1.0.0",
-  "description": "A discord bot for TPT2s wiki",
+  "description": "A discord bot for TPT2s fandom",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -31,7 +31,7 @@
     "directory-tree": "^3.0.1",
     "discord-api-types": "^0.25.2",
     "discord.js": "^13.3.1",
-    "dotenv": "^14.3.2",
+    "dotenv": "^10.0.0",
     "eslint": "^8.5.0"
   }
 }

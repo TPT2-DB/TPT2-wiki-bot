@@ -2,8 +2,9 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName("command")
-		.setDescription("This is a command"),
+		.setName("bot")
+		.setDescription("Get info about me"),
+	category: "misc",
 	async execute(interaction) {
 		interaction.reply({
 			content: "Command",
