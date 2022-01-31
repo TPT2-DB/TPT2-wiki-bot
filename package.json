@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A discord bot for TPT2s fandom",
   "main": "index.js",
+  "engines": {
+    "node": "16.13.1",
+    "npm": "8.1.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/bot.js",
