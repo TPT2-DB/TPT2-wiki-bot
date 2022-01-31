@@ -25,13 +25,11 @@ module.exports = {
 			const command = interaction.client.commands[commandOption];
 
 			const options = [];
-			console.log(command.data.options);
 			let def = "";
 			for (const option of command.data.options) {
 				let s = "";
 				let desc = command.data.description;
 				let name = command.data.name;
-				console.log(option);
 				if (!option.type) {
 					s += ` ${option.name}`;
 					desc = option.description;

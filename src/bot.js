@@ -1,5 +1,5 @@
 const { Client, Intents } = require("discord.js");
-const { token, mongoKey } = require("../config");
+const { token } = require("../config");
 const fs = require("fs");
 const dirTree = require("directory-tree");
 
@@ -18,7 +18,6 @@ const createTree = (dir, indents, cmdName, subCmdGroup, ct) => {
 	const commandTree = ct;
 	const folders = [];
 	const files = dirTree(dir, { extensions: /\.js/ });
-	console.log(files)
 	for (const c in files.children) {
 		const child = files.children[c];
 
@@ -139,8 +138,7 @@ const createCommands = (tree) => {
 
 const commandsFolder = fs.readdirSync("./src/commands");
 for (const folder of commandsFolder) {
-	console.log(folder)
-	if (folder === ".DS_Store") { continue }
+	if (folder === ".DS_Store") { continue; }
 	const tree = createTree("./src/commands/" + folder, 0, undefined, undefined, {});
 	createCommands(tree);
 }

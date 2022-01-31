@@ -22,13 +22,13 @@ module.exports = {
 			.setTitle("Info")
 			.setDescription("Information about the bot")
 			.setTimestamp()
-			.setFooter("Use /help to get help")
+			.setFooter({ text: "Use /help to get help" })
 			.setThumbnail(interaction.client.user.displayAvatarURL())
 			.addFields(
 				{ name: "Name", value: interaction.client.user.username || "CatTheBot", inline: true },
 				{ name: "Creator", value: `${creator}, [contributors](https://github.com/TPT2-DB/TPT2-wiki-bot/graphs/contributors)`, inline: true },
 				{ name: "Created", value: `<t:${Math.round(interaction.client.user.createdTimestamp / 1000)}:F>`, inline: false },
-				{ name: "Id", value: "" + interaction.client.user.id, inline: true },
+				{ name: "Id", value: `\`${interaction.client.user.id}\``, inline: true },
 				{ name: "Servers", value: "" + interaction.client.guilds.cache.size, inline: true },
 			);
 		interaction.reply({ embeds: [embed] });
