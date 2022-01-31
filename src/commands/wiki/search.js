@@ -80,7 +80,7 @@ module.exports = {
 						.setTimestamp()
 						.setFooter({ text: "Use /help to get help" });
 
-					await interaction.editReply({ embeds: [errorEmbed], components: [] })
+					await interaction.editReply({ embeds: [errorEmbed], components: [] });
 					return;
 				}
 
