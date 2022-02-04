@@ -28,7 +28,8 @@ module.exports = {
 				{ name: "Name", value: interaction.client.user.username || "CatTheBot", inline: true },
 				{ name: "Creator", value: `${creator}, [contributors](https://github.com/TPT2-DB/TPT2-wiki-bot/graphs/contributors)`, inline: true },
 				{ name: "Created", value: `<t:${Math.round(interaction.client.user.createdTimestamp / 1000)}:F>`, inline: false },
-				{ name: "Id", value: `\`${interaction.client.user.id}\``, inline: true },
+				{ name: "Invite", value: "[Click here](https://discord.com/api/oauth2/authorize?client_id=937054762271146074&permissions=277025744960&scope=bot%20applications.commands)", inline: false },
+				{ name: "Id", value: `\`${interaction.client.user.id}\``, inline: false },
 				{ name: "Servers", value: "" + interaction.client.guilds.cache.size, inline: true },
 			);
 		interaction.reply({ embeds: [embed] });
