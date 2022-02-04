@@ -84,6 +84,12 @@ module.exports = {
 					return;
 				}
 
+				const userUrl = encodeURI(`https://tpt2.fandom.com/api/v1/User/Details?ids=${article.revision.user_id}`);
+				const userResponse = await axios.get(userUrl);
+				const userData = userResponse.data;
+				console.log(userData);
+				const user = userData.items[0];
+
 				const articleEmbed = new MessageEmbed()
 					.setColor("2F3136")
 					.setTitle(article.title)
@@ -91,7 +97,8 @@ module.exports = {
 					.setThumbnail(article.thumbnail)
 					.setDescription(article.abstract + `[...](${articleData.basepath + article.url})\n\nRead the full article [here](${articleData.basepath + article.url})`)
 					.setTimestamp()
-					.setFooter({ text: "Use /help to get help" });
+					.setFooter({ text: "Use /help to get help" })
+					.setAuthor({ name: user.name, url: user.url, iconURL: user.avatar });
 
 				await interaction.editReply({ embeds: [articleEmbed], components: [] });
 			});
